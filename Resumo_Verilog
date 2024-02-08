@@ -1,0 +1,134 @@
+============
+- Net: Representa cconeções físicas entre componentes; (não armazena dados, é apenas uma conexão)
+	por exemplo:
+	         __________
+	   A ---|          |
+		|          |---+
+	   B ---|__________|   |
+	                       | (wire: somente um fio)
+	                       | Net seria essa ligação 
+	                       |    __________
+	                       |   |          |
+	                       +---|          |--- x
+	                           |__________|
+	- wire:   representa um fio ou um nó; 
+	- tri:    nó tri-state;
+	- suply0: valor lógico 0; (fio ligado no terra)
+	- suply1: valor lógico 1; (fio ligado no vcc)
+
+- Variable: Elemento para armazenamento temporário de dados; (armazena dados)
+	- reg:                  varável de qualquer comprimento, sem sinal (mais utilizado, análogo a variável em programação);
+	- integer:              variável de 32 bits, sem sinal; (inteiro)
+	- real, time, realtime: Não sintetizável;
+	obs.: signed: modificador para indicar sinal (colocado na rente do reg para receber numeros negativos)
+
+============	
+Arrays:
+
+- Declaração de Arrays
+              [bit max:bit min]
+	- <DataType>[a:b] nome [c:d](esse segundo [] serve para dimensionar, por exemplo: colunas que vão de 0 a 7 e linhas que vão de 0 a 2, criando uma uma estrutura de dados mais complexa)(3 vetores de 8 bits [7:0][2:0])
+	 _______________
+      __|7|6|5|4|3|2|1|0|
+     |0 |0|1|1|0|0|0|1|1|-> 99
+     |1 |1|1|1|0|0|0|1|1|-> 227
+     |2 |1|1|0|0|1|0|0|0|-> 200
+     
+Acesso à Arrays:
+	    [linha][coluna]
+	- nome[c:d][a:b](exemplo: memoria[0](linha 0)[7:0](de 7 a 0) ou memoria[1][5](linha 1 coluna 5) (lembrando que e decrescente) ou memoria[2:1][2:0] da linha 1 a 2, coluna 2 a 0);
+	
+============
+Atribuções:
+
+	- Atribuições Contínua(assign)
+		- É sempre ativa
+		ex: assign fio1 = fio2 (fio1 vai receber o conteudo do fio2)
+		(se fio2 for alterado, consequentemente fio1 sera alterado)
+			 Circuitos combinacionais:
+			  - modelados em apenas 1 linha
+			ex: fio1 = fio2 & fio3 (fio2 e fio3 = a fio1, sintetizando em uma porta)
+			 _____
+		   f2---|     |
+	                |     |---->f1
+	           f3---|_____|
+	           
+	- Atribuição Procedural(always)
+		- Ativa de acordo com a lista de sensibilidade (acontece quando determinada coisa acontecer, ou seja, depende de outra situação para acontecer)
+			Circuitos combinacionais:
+			ex: always@(fio1,fio2...) (sempre que fio2 alterar fio1 também sera alterado)
+		            always@(*)(shortcut * para generalizar todas as portas)
+		        Circuitos sequenciais:    
+			ex: always@(posedge clk, negedge reset)(posedge borda de subida, negedge borda de decida executa o que vem a seguir)
+		- initial: não sintetizável(pode colocar quantas linhas quiser entre "begin" e "end")
+			ex: always@(fio2)
+			    reg1 = fio2;
+			    
+	- Atribuição continua(assign):
+		module somador
+		(input[3:0]a,b, 
+		output[3:0] res); (quando não assume nenhuma opção depois do input ou output, automaticamente indica que é wire)
+			assign res = a + b; (res tem que ser wire)
+		endmodule
+		 
+	 - Atribuição procedural(always):
+	 	module somador
+	 	(input [3:0]a,b, 
+	 	output reg[3:0] res);
+	 	   always@(*)
+	 	     res = a + b;
+	 	endmodule 
+	 	
+	 obs.: sempre que utilizar assign o lado esquerdo sempre tem que ser wire e o lado direito pode ser wire/reg, ja o always, o lado esquerdo tem que ser obrigatoriamente reg, ja o lado esquerdo pode ser wire/reg
+
+	- Blocking(=)
+		- Executada linha a linh, na sequência
+		ex:
+		always@(*)
+		begin
+		    a = #5 b; (#5 = delay artificial)
+		    c = #10 a;(#10 = ")
+		end
+		('b' atribui um novo valor a 'a' e o novo valor de 'a' atribui ao valor de 'c')
+		
+		  a = 1; b = 2;
+		- a=b=2  --- c=a=2
+		
+	- Nonblocking(<=)
+		- O lado direito de todas as atribuições são avaliadas no mesmo instante
+		ex:
+		always@(*)
+		begin
+		    a <= #5 b;
+		    c <= #10 a;
+		end
+		
+		  a = 1; b = 2;
+		- a=b=2 c=a=1
+		('a' vai receber o valor de 'b' no instante 5, no instante 10 'c' vai receber o valor INICIAL de 'a')
+		
+		RECOMENDAÇÂO: usar o '=' para circuitos combinatório e '<=' para circuitos sequenciais
+		
+============
+Constantes Numéricas:
+
+	-<tamanho(quantidade de BITs)>'<base numérica><valor da constante
+		ex: 3'b010       decimal: 2
+		    8'd25        decimal: 25
+		   16'hA_B_C_D   decimal: 43981
+		      010        decimal: 10    (por padrão quando não e especificado o valor sera decimal e de tamanho 32 BITs)
+		    3'd008       decimal: 0
+		   -8'd3         decimal: 253(-3)
+		   
+	possiveis modificadores:
+		- Decimal: d
+		- Hexa:    h
+		- Binário: b
+		- Octal:   o
+		- Signed:  s (com sinal)
+ 		
+		
+		
+		
+		
+		
