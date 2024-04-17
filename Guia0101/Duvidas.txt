@@ -1,1 +1,0 @@
-PERGUNTAR: Representação binária depende do numero de bits, no sentido horario somente é positivo a "proxima"(contando com a parte menor) unidade e quando avança mais uma unidade ela é negativa? por exemplo no sentido horario: 00 -> 01(positivo) -> 10(negativo) -> 11(negativo) -> 00(positiva) ela completa esse ciclo nesse formato? 
