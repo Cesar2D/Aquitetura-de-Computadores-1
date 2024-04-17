@@ -14,7 +14,8 @@ class Exercicio01c {
         double result = 0.0; // result
         int counterP = 0; // positive counter (<--'.')
         int counterN = 0; // negative counter ('.'-->)
-        int pointerPos = 0; // pointer position (counter for subtraction when using numbers "before" the point ('.'<--))
+        int pointerPos = 0; // pointer position (counter for subtraction when using numbers "before" the
+                            // point ('.'<--))
         int length = value.length(); // length of value
 
         // MyIO.println("length = " + length);
@@ -37,7 +38,6 @@ class Exercicio01c {
         x = length - pointerPos; // size assignment to limit where the dot '.'
 
         if (z > 0) {
-
             // assignment to start with '2' raised to '1'
             counterN = 1;
 
@@ -56,8 +56,8 @@ class Exercicio01c {
 
                 // counter for power (position for conversion)
                 counterN = counterN + 1;
-            }
-        }
+            } /// end while
+        } // end if
 
         // MyIO.println("After while = " + result);
 
@@ -91,7 +91,6 @@ class Exercicio01c {
         print = bin2double(value);
 
         MyIO.println("O valor convertido e: " + print);
-
     } // end main()
 
 } // end class Exercicio01c
